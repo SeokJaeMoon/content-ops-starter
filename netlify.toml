@@ -1,3 +1,26 @@
 [build]
-  command = "npm run build"
-  publish = ".next"
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/student"
+  to = "/student/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/student/*"
+  to = "/student/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200

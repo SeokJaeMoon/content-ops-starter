@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>학생용 특강 신청 | ClassReg</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="/">ClassReg</a>
+        <nav class="topbar-nav">
+          <a class="active" href="/student/">학생 신청</a>
+          <a href="/admin/">관리자</a>
+        </nav>
+      </header>
+
+      <main class="app-layout">
+        <section class="section-header">
+          <div>
+            <p class="eyebrow">Student Portal</p>
+            <h1>진로특강 수강신청</h1>
+            <p>원하는 특강을 찾고 상세 정보를 확인한 뒤 바로 신청할 수 있습니다.</p>
+          </div>
+          <div class="stat-strip" id="student-summary"></div>
+        </section>
+
+        <section class="content-grid student-grid">
+          <div class="card panel">
+            <div class="panel-header">
+              <h2>특강 검색</h2>
+            </div>
+            <form id="lecture-filter-form" class="stack-form">
+              <div class="form-row two">
+                <label>
+                  <span>학교급</span>
+                  <select name="schoolLevel" id="school-level-filter">
+                    <option value="">전체</option>
+                  </select>
+                </label>
+                <label>
+                  <span>분야</span>
+                  <select name="category" id="category-filter">
+                    <option value="">전체</option>
+                  </select>
+                </label>
+              </div>
+              <label>
+                <span>검색어</span>
+                <input type="search" name="keyword" id="keyword-filter" placeholder="특강명, 설명, 강사명" />
+              </label>
+            </form>
+
+            <div class="lecture-list" id="lecture-list"></div>
+          </div>
+
+          <aside class="card panel detail-panel">
+            <div id="lecture-detail"></div>
+
+            <div class="divider"></div>
+
+            <div class="panel-header">
+              <h2>수강신청</h2>
+            </div>
+            <div class="message" id="student-message" hidden></div>
+            <form
+              id="application-form"
+              name="classreg-application"
+              method="POST"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              class="stack-form"
+            >
+              <input type="hidden" name="form-name" value="classreg-application" />
+              <input type="hidden" name="bot-field" />
+              <input type="hidden" name="lectureId" id="selected-lecture-id" />
+
+              <label>
+                <span>학생 이름</span>
+                <input type="text" name="studentName" required maxlength="20" />
+              </label>
+
+              <div class="form-row two">
+                <label>
+                  <span>학교급</span>
+                  <select name="schoolLevel" required>
+                    <option value="">선택</option>
+                    <option value="초등">초등</option>
+                    <option value="중등">중등</option>
+                    <option value="고등">고등</option>
+                  </select>
+                </label>
+                <label>
+                  <span>학년</span>
+                  <input type="number" name="grade" required min="1" max="12" />
+                </label>
+              </div>
+
+              <label>
+                <span>학교명</span>
+                <input type="text" name="schoolName" required maxlength="40" />
+              </label>
+
+              <label>
+                <span>보호자 연락처</span>
+                <input type="tel" name="parentPhone" required placeholder="010-1234-5678" />
+              </label>
+
+              <button type="submit" class="button primary wide" id="apply-button">신청하기</button>
+            </form>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/assets/student.js"></script>
+  </body>
+  </html>

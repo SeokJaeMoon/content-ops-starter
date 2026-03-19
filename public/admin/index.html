@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관리자 운영 페이지 | ClassReg</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="/">ClassReg</a>
+        <nav class="topbar-nav">
+          <a href="/student/">학생 신청</a>
+          <a class="active" href="/admin/">관리자</a>
+        </nav>
+      </header>
+
+      <main class="app-layout admin-layout">
+        <section class="section-header">
+          <div>
+            <p class="eyebrow">Admin Portal</p>
+            <h1>관리자 운영 대시보드</h1>
+            <p>특강, 강사, 신청 현황과 통계를 한 곳에서 관리합니다.</p>
+          </div>
+          <div class="admin-meta">
+            <span class="badge">데모 계정: admin / admin1234</span>
+            <button class="button ghost" id="logout-button" hidden>로그아웃</button>
+          </div>
+        </section>
+
+        <div class="message" id="admin-global-message" hidden></div>
+
+        <section class="card login-card" id="login-card">
+          <div class="panel-header">
+            <h2>관리자 로그인</h2>
+          </div>
+          <form id="login-form" class="stack-form narrow">
+            <label>
+              <span>아이디</span>
+              <input type="text" name="username" value="admin" required />
+            </label>
+            <label>
+              <span>비밀번호</span>
+              <input type="password" name="password" value="admin1234" required />
+            </label>
+            <button type="submit" class="button primary">로그인</button>
+          </form>
+        </section>
+
+        <section id="admin-app" hidden>
+          <div class="tab-bar" id="admin-tab-bar">
+            <button class="tab active" data-tab="lectures">특강 관리</button>
+            <button class="tab" data-tab="instructors">강사 관리</button>
+            <button class="tab" data-tab="applications">신청 조회</button>
+            <button class="tab" data-tab="stats">통계 대시보드</button>
+          </div>
+
+          <section class="tab-panel active" data-panel="lectures">
+            <div class="content-grid admin-two-column">
+              <div class="card panel">
+                <div class="panel-header">
+                  <h2>특강 등록 / 수정</h2>
+                  <button type="button" class="button ghost small" id="reset-lecture-form">초기화</button>
+                </div>
+                <form id="lecture-form" class="stack-form">
+                  <input type="hidden" name="id" />
+                  <label>
+                    <span>특강명</span>
+                    <input type="text" name="title" required />
+                  </label>
+                  <div class="form-row two">
+                    <label>
+                      <span>대상 학교급</span>
+                      <select name="targetSchoolLevel" required>
+                        <option value="">선택</option>
+                        <option value="초등">초등</option>
+                        <option value="중등">중등</option>
+                        <option value="고등">고등</option>
+                        <option value="전체">전체</option>
+                      </select>
+                    </label>
+                    <label>
+                      <span>카테고리</span>
+                      <input type="text" name="category" required />
+                    </label>
+                  </div>
+                  <label>
+                    <span>설명</span>
+                    <textarea name="description" rows="4" required></textarea>
+                  </label>
+                  <div class="form-row three">
+                    <label>
+                      <span>날짜</span>
+                      <input type="date" name="date" required />
+                    </label>
+                    <label>
+                      <span>시간</span>
+                      <input type="time" name="time" required />
+                    </label>
+                    <label>
+                      <span>정원</span>
+                      <input type="number" name="maxSeats" min="1" required />
+                    </label>
+                  </div>
+                  <div class="form-row two">
+                    <label>
+                      <span>강사</span>
+                      <select name="instructorId" id="lecture-instructor-select" required></select>
+                    </label>
+                    <label>
+                      <span>상태</span>
+                      <select name="status" required>
+                        <option value="open">신청 가능</option>
+                        <option value="closed">마감</option>
+                        <option value="completed">종료</option>
+                      </select>
+                    </label>
+                  </div>
+                  <button type="submit" class="button primary">특강 저장</button>
+                </form>
+              </div>
+
+              <div class="card panel">
+                <div class="panel-header">
+                  <h2>특강 목록</h2>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>특강명</th>
+                        <th>학교급</th>
+                        <th>강사</th>
+                        <th>신청/정원</th>
+                        <th>상태</th>
+                        <th>관리</th>
+                      </tr>
+                    </thead>
+                    <tbody id="lectures-table-body"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="tab-panel" data-panel="instructors">
+            <div class="content-grid admin-two-column">
+              <div class="card panel">
+                <div class="panel-header">
+                  <h2>강사 등록 / 수정</h2>
+                  <button type="button" class="button ghost small" id="reset-instructor-form">초기화</button>
+                </div>
+                <form id="instructor-form" class="stack-form">
+                  <input type="hidden" name="id" />
+                  <label>
+                    <span>강사명</span>
+                    <input type="text" name="name" required />
+                  </label>
+                  <label>
+                    <span>전문 분야</span>
+                    <input type="text" name="specialty" required />
+                  </label>
+                  <label>
+                    <span>소개</span>
+                    <textarea name="bio" rows="4" required></textarea>
+                  </label>
+                  <div class="form-row two">
+                    <label>
+                      <span>연락처</span>
+                      <input type="tel" name="phone" required placeholder="010-1234-5678" />
+                    </label>
+                    <label>
+                      <span>이메일</span>
+                      <input type="email" name="email" required />
+                    </label>
+                  </div>
+                  <button type="submit" class="button primary">강사 저장</button>
+                </form>
+              </div>
+
+              <div class="card panel">
+                <div class="panel-header">
+                  <h2>강사 목록</h2>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>강사명</th>
+                        <th>전문 분야</th>
+                        <th>연락처</th>
+                        <th>이메일</th>
+                        <th>관리</th>
+                      </tr>
+                    </thead>
+                    <tbody id="instructors-table-body"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="tab-panel" data-panel="applications">
+            <div class="card panel">
+              <div class="panel-header">
+                <h2>신청 목록</h2>
+                <div class="toolbar">
+                  <select id="application-filter-lecture">
+                    <option value="">전체 특강</option>
+                  </select>
+                  <select id="application-filter-level">
+                    <option value="">전체 학교급</option>
+                    <option value="초등">초등</option>
+                    <option value="중등">중등</option>
+                    <option value="고등">고등</option>
+                  </select>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>신청일시</th>
+                      <th>학생</th>
+                      <th>학교</th>
+                      <th>학교급/학년</th>
+                      <th>보호자 연락처</th>
+                      <th>특강</th>
+                      <th>상태</th>
+                    </tr>
+                  </thead>
+                  <tbody id="applications-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="tab-panel" data-panel="stats">
+            <div class="dashboard-actions">
+              <button class="button secondary" id="refresh-stats-button">통계 새로고침</button>
+              <button class="button ghost" id="seed-button">샘플 데이터 재설정</button>
+            </div>
+            <div class="summary-grid" id="stats-summary"></div>
+            <div class="content-grid admin-two-column">
+              <div class="card panel">
+                <div class="panel-header">
+                  <h2>특강별 신청자 수</h2>
+                </div>
+                <div id="chart-lecture-applications" class="chart-list"></div>
+              </div>
+              <div class="card panel">
+                <div class="panel-header">
+                  <h2>학교급별 신청 분포</h2>
+                </div>
+                <div id="chart-school-level" class="chart-list compact"></div>
+              </div>
+              <div class="card panel full-span">
+                <div class="panel-header">
+                  <h2>강사별 배정 현황</h2>
+                </div>
+                <div id="chart-instructor-assignments" class="chart-list"></div>
+              </div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/assets/admin.js"></script>
+  </body>
+  </html>
